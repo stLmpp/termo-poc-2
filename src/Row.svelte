@@ -1,16 +1,23 @@
 <script lang="ts">
   import Letter from './Letter.svelte';
 
-  export let length = 5;
   export let disabled = false;
-  export let values = Array.from({ length }, () => '');
+  export let values = [];
 
-  $: array = Array.from({ length });
+  let selectedIndex = 0;
+
+  function onNext(): void {
+    selectedIndex = Math.min(values.length, selectedIndex + 1);
+  }
+
+  function onFocus(index: number): void {
+    selectedIndex = index;
+  }
 </script>
 
 <div class="row">
-  {#each values as value}
-    <Letter {disabled} {value} />
+  {#each values as value, index}
+    <Letter {disabled} bind:value hasFocus={selectedIndex === index} on:next={onNext} on:focus={() => onFocus(index)} />
   {/each}
 </div>
 
