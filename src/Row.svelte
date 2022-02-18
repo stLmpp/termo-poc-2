@@ -3,13 +3,14 @@
   import { createEventDispatcher } from 'svelte';
   import type { ILetter } from './model/letter';
 
+  export let rowIndex: number;
   export let disabled = false;
   export let letters: ILetter[] = [];
   export let selectionMode = false;
 
   let selectedIndex = 0;
 
-  const dispatcher = createEventDispatcher<{ next: void }>();
+  const dispatcher = createEventDispatcher<{ next: void; previous: void }>();
 
   function onNextLetter(): void {
     selectedIndex = Math.min(selectedIndex + 1, letters.length - 1);
@@ -17,6 +18,10 @@
 
   function onFocusLetter(index: number): void {
     selectedIndex = index;
+  }
+
+  function onPrevious(): void {
+    dispatcher('previous');
   }
 
   function onPreviousLetter(): void {
@@ -53,6 +58,9 @@
       <button on:click={onClick} disabled={disabledEnterEditMode} class="btn btn-primary">
         {selectionMode ? 'Next' : 'Enter selection mode'}
       </button>
+      {#if rowIndex}
+        <button on:click={onPrevious} class="btn btn-primary">Previous</button>
+      {/if}
     {/if}
   </div>
 </div>

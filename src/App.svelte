@@ -12,8 +12,17 @@
   let language = LanguageEnum.ptBr;
 
   function onNext(): void {
-    rows = rows.map((row, index) => ({ ...row, disabled: selectedRowIndex + 1 !== index }));
     selectedRowIndex++;
+    rows = rows.map((row, index) => ({ ...row, disabled: selectedRowIndex !== index }));
+  }
+
+  function onPrevious(): void {
+    selectedRowIndex--;
+    rows = rows.map((row, index) => ({
+      ...row,
+      disabled: selectedRowIndex !== index,
+      selectionMode: index === selectedRowIndex ? false : row.selectionMode,
+    }));
   }
 
   let selectedRowIndex = 0;
@@ -45,7 +54,14 @@
     {/each}
   </select>
   {#each rows as row, index}
-    <Row bind:letters={row.letters} disabled={row.disabled} bind:selectionMode={row.selectionMode} on:next={onNext} />
+    <Row
+      bind:letters={row.letters}
+      disabled={row.disabled}
+      bind:selectionMode={row.selectionMode}
+      on:next={onNext}
+      on:previous={onPrevious}
+      rowIndex={index}
+    />
   {/each}
   <hr />
   {JSON.stringify(rows)}
