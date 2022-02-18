@@ -12,7 +12,7 @@
   const dispatcher = createEventDispatcher<{ next: void }>();
 
   function onNextLetter(): void {
-    selectedIndex = Math.min(selectedIndex + 1, letters.length);
+    selectedIndex = Math.min(selectedIndex + 1, letters.length - 1);
   }
 
   function onFocusLetter(index: number): void {
