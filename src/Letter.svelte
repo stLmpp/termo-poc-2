@@ -2,7 +2,7 @@
   import { afterUpdate, createEventDispatcher } from 'svelte';
   import type { ILetter } from './model/letter';
 
-  export let letter: ILetter = { hasLetter: false, value: '', sameIndex: false };
+  export let letter: ILetter = { hasLetter: false, value: '', sameIndex: false, index: 0 };
   export let disabled = false;
   export let hasFocus = false;
   export let selectionMode = false;

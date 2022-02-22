@@ -59,7 +59,7 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': ['off'],
     '@typescript-eslint/prefer-optional-chain': ['warn'],
     '@typescript-eslint/explicit-module-boundary-types': ['off'],
-    '@typescript-eslint/no-shadow': ['error'],
+    '@typescript-eslint/no-shadow': ['error', { allow: ['_'] }],
     '@typescript-eslint/consistent-type-assertions': ['error', { assertionStyle: 'as' }],
     '@typescript-eslint/no-inferrable-types': ['error'],
     '@typescript-eslint/naming-convention': [
