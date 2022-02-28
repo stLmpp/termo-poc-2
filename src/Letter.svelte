@@ -46,22 +46,15 @@
     if (!selectionMode) {
       return;
     }
-    letter = { ...letter, hasLetter: true, sameIndex: true };
-  }
-
-  function onDblclick(): void {
-    if (!selectionMode) {
-      return;
+    if (letter.hasLetter) {
+      if (letter.sameIndex) {
+        letter = { ...letter, hasLetter: false, sameIndex: false };
+      } else {
+        letter = { ...letter, sameIndex: true };
+      }
+    } else {
+      letter = { ...letter, hasLetter: true, sameIndex: false };
     }
-    letter = { ...letter, hasLetter: false, sameIndex: false };
-  }
-
-  function onContextmenu(event: Event): void {
-    if (!selectionMode) {
-      return;
-    }
-    event.preventDefault();
-    letter = { ...letter, hasLetter: true, sameIndex: false };
   }
 
   afterUpdate(() => {
@@ -84,8 +77,6 @@
   on:keyup={onKeyup}
   on:keydown={onKeydown}
   on:click={onClick}
-  on:dblclick={onDblclick}
-  on:contextmenu={onContextmenu}
   readonly={selectionMode && !disabled}
 />
 

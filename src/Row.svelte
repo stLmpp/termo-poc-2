@@ -2,6 +2,7 @@
   import Letter from './Letter.svelte';
   import { createEventDispatcher } from 'svelte';
   import type { ILetter } from './model/letter';
+  import Icon from './Icon.svelte';
 
   export let rowIndex: number;
   export let disabled = false;
@@ -55,11 +56,18 @@
   </div>
   <div class="action">
     {#if !disabled}
-      <button on:click={onClick} disabled={disabledEnterEditMode} class="btn btn-primary">
-        {selectionMode ? 'Next' : 'Enter selection mode'}
+      <button
+        on:click={onClick}
+        disabled={disabledEnterEditMode}
+        class="btn btn-primary"
+        title={selectionMode ? 'Next' : 'Enter selection mode'}
+      >
+        <Icon icon={selectionMode ? 'arrow-return-left' : 'check2'} />
       </button>
       {#if rowIndex}
-        <button on:click={onPrevious} class="btn btn-primary">Previous</button>
+        <button on:click={onPrevious} class="btn btn-primary" title="Go back">
+          <Icon icon="arrow-counterclockwise" />
+        </button>
       {/if}
     {/if}
   </div>

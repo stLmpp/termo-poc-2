@@ -108,3 +108,7 @@
     disabled={!!rows[selectedRowIndex]?.selectionMode}
   />
 </main>
+
+<style global>
+  @import 'bootstrap/dist/css/bootstrap.css';
+</style>
