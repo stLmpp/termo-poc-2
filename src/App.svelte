@@ -95,6 +95,7 @@
           on:next={onNext}
           on:previous={onPrevious}
           rowIndex={index}
+          lastRow={index === rows.length - 1}
         />
       {/each}
     </div>

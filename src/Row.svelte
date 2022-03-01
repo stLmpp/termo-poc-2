@@ -8,6 +8,7 @@
   export let disabled = false;
   export let letters: ILetter[] = [];
   export let selectionMode = false;
+  export let lastRow = false;
 
   let selectedIndex = 0;
 
@@ -22,7 +23,9 @@
   }
 
   function onPrevious(): void {
-    dispatcher('previous');
+    if (rowIndex) {
+      dispatcher('previous');
+    }
   }
 
   function onPreviousLetter(): void {
@@ -31,8 +34,20 @@
 
   function onClick(): void {
     if (selectionMode) {
-      dispatcher('next');
+      if (!lastRow) {
+        dispatcher('next');
+      }
     } else {
+      selectionMode = true;
+    }
+  }
+
+  function onEnter(): void {
+    if (selectionMode) {
+      if (!lastRow) {
+        dispatcher('next');
+      }
+    } else if (letters.every(letter => letter.value)) {
       selectionMode = true;
     }
   }
@@ -51,19 +66,27 @@
         on:next={onNextLetter}
         on:previous={onPreviousLetter}
         on:focus={() => onFocusLetter(index)}
+        on:enter={onEnter}
+        on:up={onPrevious}
       />
     {/each}
   </div>
   <div class="action">
     {#if !disabled}
-      <button
-        on:click={onClick}
-        disabled={disabledEnterEditMode}
-        class="btn btn-primary"
-        title={selectionMode ? 'Next' : 'Enter selection mode'}
-      >
-        <Icon icon={selectionMode ? 'arrow-return-left' : 'check2'} />
-      </button>
+      {#if !selectionMode}
+        <button
+          on:click={onClick}
+          disabled={disabledEnterEditMode}
+          class="btn btn-primary"
+          title="Enter selection mode"
+        >
+          <Icon icon="check2" />
+        </button>
+      {:else}
+        <button on:click={onClick} disabled={lastRow} class="btn btn-primary" title="Next">
+          <Icon icon="arrow-return-left" />
+        </button>
+      {/if}
       {#if rowIndex}
         <button on:click={onPrevious} class="btn btn-primary" title="Go back">
           <Icon icon="arrow-counterclockwise" />

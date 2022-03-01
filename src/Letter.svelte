@@ -9,7 +9,7 @@
 
   let input: HTMLInputElement;
 
-  const dispatch = createEventDispatcher<{ next: void; focus: void; previous: void }>();
+  const dispatch = createEventDispatcher<{ next: void; focus: void; previous: void; enter: void; up: void }>();
 
   const onlyLetterReg = /^[a-zA-Z]$/;
 
@@ -39,6 +39,12 @@
     }
     if (event.key === 'ArrowRight') {
       dispatch('next');
+    }
+    if (event.key === 'ArrowDown' || event.key === 'Enter') {
+      dispatch('enter');
+    }
+    if (event.key === 'ArrowUp') {
+      dispatch('up');
     }
   }
 
