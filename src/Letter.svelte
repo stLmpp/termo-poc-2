@@ -84,6 +84,7 @@
   on:keydown={onKeydown}
   on:click={onClick}
   readonly={selectionMode && !disabled}
+  title={selectionMode && !disabled ? 'Click to change the state' : ''}
 />
 
 <style>

@@ -55,7 +55,7 @@
   $: disabledEnterEditMode = letters.some(letter => !letter.value);
 </script>
 
-<div class="row-container">
+<div class="row-container" class:active={!disabled}>
   <div class="row">
     {#each letters as letter, index}
       <Letter
@@ -103,10 +103,29 @@
 
   .row-container {
     display: flex;
+    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    margin-right: 1rem;
+    margin-left: 2rem;
+  }
+
+  .row-container.active {
+    border-color: var(--bs-primary);
+    padding: 0.5rem;
   }
 
   .action {
+    margin-left: 1rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .action .btn:not(:first-of-type) {
     margin-left: 1rem;
   }
 </style>

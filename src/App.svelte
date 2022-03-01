@@ -76,30 +76,22 @@
 
 <main class="container">
   <h1>Termo predictions</h1>
-  <div class="row">
-    <div class="col-3">
-      <select bind:value={language} class="form-select mb-3" on:change={onSelectChange}>
-        {#each languages as language}
-          <option value={language.key}>{language.name}</option>
-        {/each}
-      </select>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12">
-      {#each rows as row, index}
-        <Row
-          bind:letters={row.letters}
-          disabled={row.disabled}
-          bind:selectionMode={row.selectionMode}
-          on:next={onNext}
-          on:previous={onPrevious}
-          rowIndex={index}
-          lastRow={index === rows.length - 1}
-        />
-      {/each}
-    </div>
-  </div>
+  <select bind:value={language} class="form-select mb-3" on:change={onSelectChange}>
+    {#each languages as language}
+      <option value={language.key}>{language.name}</option>
+    {/each}
+  </select>
+  {#each rows as row, index}
+    <Row
+      bind:letters={row.letters}
+      disabled={row.disabled}
+      bind:selectionMode={row.selectionMode}
+      on:next={onNext}
+      on:previous={onPrevious}
+      rowIndex={index}
+      lastRow={index === rows.length - 1}
+    />
+  {/each}
   <hr />
   <h2 class="mb-3">Suggested words</h2>
   <Suggestions
