@@ -64,7 +64,7 @@
   }
 
   afterUpdate(() => {
-    if (input && hasFocus) {
+    if (input && hasFocus && !selectionMode) {
       input.focus();
     }
   });
@@ -92,6 +92,10 @@
     width: 40px;
     margin: 0.25rem 0.5rem;
     text-align: center;
+  }
+
+  .form-control.letter[readonly] {
+    user-select: none;
   }
 
   .form-control.letter.has-letter[readonly],
