@@ -6,6 +6,7 @@
   import { LanguageEnum } from './model/language.enum';
   import { Words } from './model/words';
   import Suggestions from './Suggestions.svelte';
+  import Navbar from './Navbar.svelte';
 
   let rows: IRow[] = [];
 
@@ -74,8 +75,9 @@
   }
 </script>
 
+<Navbar />
+
 <main class="container">
-  <h1>Termo predictions</h1>
   <select bind:value={language} class="form-select mb-3" on:change={onSelectChange}>
     {#each languages as language}
       <option value={language.key}>{language.name}</option>
@@ -104,4 +106,9 @@
 
 <style global>
   @import 'bootstrap/dist/css/bootstrap.css';
+
+  main {
+    padding-top: calc(50px + 1rem);
+    padding-bottom: 2rem;
+  }
 </style>
