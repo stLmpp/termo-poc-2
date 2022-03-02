@@ -33,7 +33,7 @@ export class Words {
     return this;
   }
 
-  unprocess(row: number): this {
+  undoProcess(row: number): this {
     this._rowWords[row] = this._rowWords[row - 1];
     return this;
   }

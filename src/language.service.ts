@@ -13,7 +13,7 @@ class LanguageService {
     return words;
   }
 
-  getLanguages(): ILanguage[] {
+  getLanguages(): readonly ILanguage[] {
     return [
       { key: LanguageEnum.ptBr, name: 'Portuguese' },
       { key: LanguageEnum.enUs, name: 'English' },

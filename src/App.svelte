@@ -32,7 +32,7 @@
       disabled: selectedRowIndex !== index,
       selectionMode: index === selectedRowIndex ? false : row.selectionMode,
     }));
-    wordsDisplay = words.unprocess(selectedRowIndex).getWordsSuggestionsShuffled(selectedRowIndex);
+    wordsDisplay = words.undoProcess(selectedRowIndex).getWordsSuggestionsShuffled(selectedRowIndex);
   }
 
   async function onSelectChange(): Promise<void> {
