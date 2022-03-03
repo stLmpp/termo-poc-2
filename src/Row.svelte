@@ -64,6 +64,7 @@
           bind:letter
           hasFocus={selectedIndex === index}
           {selectionMode}
+          row={rowIndex}
           on:next={onNextLetter}
           on:previous={onPreviousLetter}
           on:focus={() => onFocusLetter(index)}

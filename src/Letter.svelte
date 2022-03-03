@@ -6,6 +6,7 @@
   export let disabled = false;
   export let hasFocus = false;
   export let selectionMode = false;
+  export let row: number;
 
   let input: HTMLInputElement;
 
@@ -70,7 +71,9 @@
   });
 </script>
 
+<label class="visually-hidden" for="row-{row}-letter-{letter.index}">Row {row} Letter {letter.index}</label>
 <input
+  id="row-{row}-letter-{letter.index}"
   bind:this={input}
   bind:value={letter.value}
   class="letter form-control"
