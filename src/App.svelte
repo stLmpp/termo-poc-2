@@ -11,11 +11,13 @@
   let rows: IRow[] = [];
 
   const languages = languageService.getLanguages();
+  const rowNumberOptions = [6, 7, 8, 9];
   let wordsArray: string[] = [];
   let words = new Words([]);
   let wordsDisplay: string[] = [];
   let language = LanguageEnum.ptBr;
   let selectedRowIndex = 0;
+  let rowNumber = 6;
 
   function onNext(): void {
     wordsDisplay = words
@@ -30,7 +32,7 @@
     rows = rows.map((row, index) => ({
       ...row,
       disabled: selectedRowIndex !== index,
-      selectionMode: index === selectedRowIndex ? false : row.selectionMode,
+      selectionMode: index === selectedRowIndex || index === selectedRowIndex + 1 ? false : row.selectionMode,
     }));
     wordsDisplay = words.undoProcess(selectedRowIndex).getWordsSuggestionsShuffled(selectedRowIndex);
   }
@@ -41,6 +43,23 @@
     startRows();
     selectedRowIndex = 0;
     wordsDisplay = words.getWordsSuggestionsShuffled(selectedRowIndex);
+  }
+
+  function onRowNumberChange(): void {
+    rows = Array.from(
+      { length: rowNumber },
+      (_, index) =>
+        rows[index] ?? {
+          selectionMode: false,
+          disabled: true,
+          letters: Array.from({ length: 5 }, (_, letterIndex) => ({
+            hasLetter: false,
+            sameIndex: false,
+            value: '',
+            index: letterIndex,
+          })),
+        }
+    );
   }
 
   function startRows(): void {
@@ -56,11 +75,6 @@
     }));
   }
 
-  onMount(async () => {
-    startRows();
-    await onSelectChange();
-  });
-
   function onSelectedWord(event: CustomEvent<string>): void {
     const letters = event.detail.split('');
     rows = rows.map((row, index) => {
@@ -73,16 +87,34 @@
       return row;
     });
   }
+
+  onMount(async () => {
+    startRows();
+    await onSelectChange();
+  });
 </script>
 
 <Navbar />
 
 <main class="container">
-  <select bind:value={language} class="form-select mb-3" on:change={onSelectChange}>
-    {#each languages as language}
-      <option value={language.key}>{language.name}</option>
-    {/each}
-  </select>
+  <div class="form">
+    <div class="form-floating">
+      <select id="language" bind:value={language} class="form-select" on:change={onSelectChange}>
+        {#each languages as language}
+          <option value={language.key}>{language.name}</option>
+        {/each}
+      </select>
+      <label for="language">Language</label>
+    </div>
+    <div class="form-floating">
+      <select bind:value={rowNumber} id="row-number" class="form-select" on:change={onRowNumberChange}>
+        {#each rowNumberOptions as rowNumberOption}
+          <option value={rowNumberOption}>{rowNumberOption}</option>
+        {/each}
+      </select>
+      <label for="row-number">Row number</label>
+    </div>
+  </div>
   {#each rows as row, index}
     <Row
       bind:letters={row.letters}
@@ -110,5 +142,12 @@
   main {
     padding-top: calc(50px + 1rem);
     padding-bottom: 2rem;
+  }
+
+  .form {
+    margin-bottom: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    grid-gap: 1rem;
   }
 </style>
