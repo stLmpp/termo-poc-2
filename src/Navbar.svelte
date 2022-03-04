@@ -9,6 +9,7 @@
     <div class="d-flex">
       <a class="btn btn-primary" target="_blank" href="https://github.com/stLmpp/termo-predictions">
         <Icon icon="github" />
+        <span class="visually-hidden">Github</span>
       </a>
     </div>
   </div>

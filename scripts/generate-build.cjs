@@ -14,15 +14,25 @@ const packageJson = `{
   "author": "stLmpp",
   "license": "ISC",
   "dependencies": {
-    "express": "~4.17.3"
+    "compression": "~1.7.4",
+    "express": "~4.17.3",
+    "helmet": "~5.0.2"
   }
 }`;
+
 const indexJs = `const { join } = require('path');
 const express = require('express');
+const helmet = require('helmet');
+const compression = require('compression');
 
-const app = express();
+const app = express()
+  .use(helmet())
+  .use(compression())
+  .use(express.static(join(process.cwd(), 'public')));
 
-app.use(express.static(join(process.cwd(), 'public')));
+app.get('/api/health', (req, res) => {
+  res.status(200).send('System online at ' + new Date().toUTCString());
+});
 
 app.listen(process.env.PORT ?? 3000, process.env.HOST ?? 'localhost');
 `;
