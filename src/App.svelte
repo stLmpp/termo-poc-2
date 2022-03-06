@@ -7,6 +7,7 @@
   import { Words } from './model/words';
   import Suggestions from './Suggestions.svelte';
   import Navbar from './Navbar.svelte';
+  import { statsService } from './stats.service';
 
   let rows: IRow[] = [];
 
@@ -91,6 +92,7 @@
   onMount(async () => {
     startRows();
     await onSelectChange();
+    await statsService.post();
   });
 </script>
 
