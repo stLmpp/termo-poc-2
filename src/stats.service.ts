@@ -1,4 +1,4 @@
-import { differenceInMinutes, isValid } from 'date-fns';
+import { differenceInMinutes, isValid, subMinutes } from 'date-fns';
 
 const baseApiUrl = import.meta.env.PROD ? '/api' : 'http://localhost:3000/api'
 const cacheKey = 'TERMO-PREDICTIONS-LAST-DATE-STATS'
@@ -12,7 +12,10 @@ class StatsService {
 
   private async _isPostNecessary(): Promise<boolean> {
     const storageDate = this.storage.getItem(cacheKey);
-    let lastDate = new Date();
+    if (!storageDate) {
+      return true;
+    }
+    let lastDate = subMinutes(new Date(), 16);
     if (storageDate && isValid(new Date(storageDate))) {
       lastDate = new Date(storageDate);
     }
