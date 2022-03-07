@@ -89,6 +89,10 @@
     });
   }
 
+  function onReset(): void {
+    startRows();
+  }
+
   onMount(async () => {
     startRows();
     await onSelectChange();
@@ -96,7 +100,7 @@
   });
 </script>
 
-<Navbar />
+<Navbar on:reset={onReset} />
 
 <main class="container">
   <div class="form">

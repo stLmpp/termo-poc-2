@@ -91,7 +91,7 @@
         {/if}
         {#if rowIndex}
           <button on:click={onPrevious} class="btn btn-primary" title="Go back">
-            <Icon icon="arrow-counterclockwise" />
+            <Icon icon="arrow-up" />
           </button>
         {/if}
       {/if}
