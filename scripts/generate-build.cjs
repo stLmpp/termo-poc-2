@@ -37,8 +37,8 @@ async function main() {
   );
   console.log('Moving server files');
   await Promise.all(serverFiles.map(file => copyFile(join(serverPath, file), join(distPath, file))));
-  console.log('Generating package-lock.json file');
-  await asyncSpawn('npm i --prefix ./dist --package-lock-only');
+  console.log('Installing dependencies');
+  await asyncSpawn('npm i --prefix ./dist');
 
   const zip = new AdmZip();
   zip.addLocalFolder(distPath);

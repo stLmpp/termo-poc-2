@@ -6,12 +6,11 @@ const { getClientConnection } = require('./database');
 const { lookup } = require('fast-geoip');
 const { config } = require('dotenv');
 const cors = require('cors');
+const { getClientIp } = require('request-ip');
 
 config();
 
-const app = express()
-  .use(helmet())
-  .use(compression());
+const app = express().use(helmet()).use(compression());
 
 function isProd() {
   return process.env.NODE_ENV !== 'development';
@@ -24,15 +23,20 @@ if (isProd()) {
 }
 
 app.post('/api/stats', async (req, res) => {
-  if (isProd() && req.ip === '127.0.0.1') {
+  const ip = getClientIp(req);
+  if (!ip) {
+    res.status(418).send({ error: `I'm a teapot`, message: 'Client ip not found' });
+    return;
+  }
+  if (isProd() && ip === '127.0.0.1') {
     res.status(400).send({ error: 'Bad request', message: `${req.ip} is not a valid ip` });
     return;
   }
   const client = await getClientConnection();
   const collection = client.db('termo-predictions').collection('stats');
-  const geoip = await lookup(req.ip)
+  const geoip = await lookup(ip);
   const document = {
-    ip: req.ip,
+    ip,
     userAgent: req.headers['user-agent'],
     language: req.headers['accept-language'],
     geo: geoip,
