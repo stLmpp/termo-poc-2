@@ -20,6 +20,7 @@ async function asyncSpawn(command, options) {
 
 const distPath = join(process.cwd(), 'dist');
 const serverPath = join(process.cwd(), 'server');
+const externalDependencies = ['geoip-lite'];
 
 async function main() {
   console.log('Starting build');
@@ -50,18 +51,23 @@ async function main() {
     platform: 'node',
     minify: true,
     outfile: join(distPath, 'index.js'),
+    external: externalDependencies,
   });
 
   console.log('Getting package.json from server');
   const packageJsonServerBuffer = await readFile(join(serverPath, 'package.json'));
   const packageJsonServer = JSON.parse(packageJsonServerBuffer.toString());
-  packageJsonServer.dependencies = {};
+  const dependencies = { ...packageJsonServer.dependencies };
+  packageJsonServer.dependencies = externalDependencies.reduce(
+    (object, dependency) => ({ ...object, [dependency]: dependencies[dependency] }),
+    {}
+  );
 
   console.log('Adding package.json on dist');
   await writeFile(join(distPath, 'package.json'), JSON.stringify(packageJsonServer));
 
-  console.log('Installing dependencies');
-  await asyncSpawn('npm i --prefix ./dist');
+  // console.log('Installing dependencies');
+  // await asyncSpawn('npm i --prefix ./dist');
 
   const zip = new AdmZip();
   zip.addLocalFolder(distPath);
