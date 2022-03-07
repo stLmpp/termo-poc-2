@@ -4,7 +4,7 @@ const express = require('express');
 const helmet = require('helmet');
 const compression = require('compression');
 const { getClientConnection } = require('./database');
-const { lookup } = require('geoip-lite');
+const { lookup } = require('fast-geoip');
 const cors = require('cors');
 const { getClientIp } = require('request-ip');
 
