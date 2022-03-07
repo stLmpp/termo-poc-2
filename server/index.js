@@ -1,24 +1,23 @@
+require('dotenv').config();
 const { join } = require('path');
 const express = require('express');
 const helmet = require('helmet');
 const compression = require('compression');
 const { getClientConnection } = require('./database');
 const { lookup } = require('fast-geoip');
-const { config } = require('dotenv');
 const cors = require('cors');
 const { getClientIp } = require('request-ip');
 
-config();
-
-const app = express().use(helmet()).use(compression());
+const app = express()
+  .use(helmet())
+  .use(compression())
+  .use(express.static(join(process.cwd(), 'public')));
 
 function isProd() {
   return process.env.NODE_ENV !== 'development';
 }
 
-if (isProd()) {
-  app.use(express.static(join(process.cwd(), 'public')));
-} else {
+if (!isProd()) {
   app.use(cors());
 }
 
