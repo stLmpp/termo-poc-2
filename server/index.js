@@ -4,7 +4,7 @@ const express = require('express');
 const helmet = require('helmet');
 const compression = require('compression');
 const { getClientConnection } = require('./database');
-const { lookup } = require('fast-geoip');
+const { lookup } = require('geoip-lite');
 const cors = require('cors');
 const { getClientIp } = require('request-ip');
 
@@ -22,7 +22,7 @@ if (!isProd()) {
 }
 
 app.post('/api/stats', async (req, res) => {
-  const ip = getClientIp(req);
+  const ip = (getClientIp(req) ?? '').trim();
   if (!ip) {
     res.status(418).send({ error: `I'm a teapot`, message: 'Client ip not found' });
     return;
@@ -31,14 +31,14 @@ app.post('/api/stats', async (req, res) => {
     res.status(400).send({ error: 'Bad request', message: `${req.ip} is not a valid ip` });
     return;
   }
-  const client = await getClientConnection();
+
+  const [client, geo] = await Promise.all([getClientConnection(), lookup(ip)]);
   const collection = client.db('termo-predictions').collection('stats');
-  const geoip = await lookup(ip);
   const document = {
     ip,
     userAgent: req.headers['user-agent'],
     language: req.headers['accept-language'],
-    geo: geoip,
+    geo,
     creationDate: new Date(),
   };
   const result = await collection.insertOne(document);
