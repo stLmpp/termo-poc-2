@@ -1,5 +1,5 @@
 const { spawn } = require('child_process');
-const { mkdir, rename, readdir, rm, writeFile, readFile, copyFile } = require('fs/promises');
+const { mkdir, rename, readdir, rm, writeFile, readFile } = require('fs/promises');
 const { join } = require('path');
 const AdmZip = require('adm-zip');
 const { build } = require('esbuild');
