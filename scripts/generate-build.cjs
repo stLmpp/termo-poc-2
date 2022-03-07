@@ -20,7 +20,7 @@ async function asyncSpawn(command, options) {
 
 const distPath = join(process.cwd(), 'dist');
 const serverPath = join(process.cwd(), 'server');
-const externalDependencies = ['geoip-lite'];
+const externalDependencies = ['fast-geoip'];
 
 async function main() {
   console.log('Starting build');
@@ -65,9 +65,6 @@ async function main() {
 
   console.log('Adding package.json on dist');
   await writeFile(join(distPath, 'package.json'), JSON.stringify(packageJsonServer));
-
-  // console.log('Installing dependencies');
-  // await asyncSpawn('npm i --prefix ./dist');
 
   const zip = new AdmZip();
   zip.addLocalFolder(distPath);
