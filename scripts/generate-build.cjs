@@ -2,6 +2,7 @@ const { spawn } = require('child_process');
 const { mkdir, rename, readdir, rm, writeFile, readFile, copyFile } = require('fs/promises');
 const { join } = require('path');
 const AdmZip = require('adm-zip');
+const { build } = require('esbuild');
 
 async function asyncSpawn(command, options) {
   const newOptions = { ...options, shell: true };
@@ -20,23 +21,45 @@ async function asyncSpawn(command, options) {
 const distPath = join(process.cwd(), 'dist');
 const serverPath = join(process.cwd(), 'server');
 
-const filesNotIncludedInServer = new Set(['node_modules', 'yarn.lock', 'package-lock.json']);
-
 async function main() {
   console.log('Starting build');
+
   console.log('Deleting dist');
   await rm(distPath, { recursive: true });
+
+  console.log('Installing front-end dependencies');
+  await asyncSpawn('yarn install');
+
   console.log('Executing build of front-end');
   await asyncSpawn('yarn build');
   const pathsToMove = await readdir(distPath);
+
+  console.log('Creating public folder');
   await mkdir(join(distPath, 'public'));
+
   console.log('Moving front-end to public folder');
   await Promise.all(pathsToMove.map(path => rename(join(distPath, path), join(distPath, 'public', path))));
-  const serverFiles = await readdir(serverPath).then(files =>
-    files.filter(file => !filesNotIncludedInServer.has(file))
-  );
-  console.log('Moving server files');
-  await Promise.all(serverFiles.map(file => copyFile(join(serverPath, file), join(distPath, file))));
+
+  console.log('Installing server dependencies');
+  await asyncSpawn('npm i --prefix ./server');
+
+  console.log('Executing build server');
+  await build({
+    entryPoints: [join(serverPath, 'index.js')],
+    bundle: true,
+    platform: 'node',
+    minify: true,
+    outfile: join(distPath, 'index.js'),
+  });
+
+  console.log('Getting package.json from server');
+  const packageJsonServerBuffer = await readFile(join(serverPath, 'package.json'));
+  const packageJsonServer = JSON.parse(packageJsonServerBuffer.toString());
+  packageJsonServer.dependencies = {};
+
+  console.log('Adding package.json on dist');
+  await writeFile(join(distPath, 'package.json'), JSON.stringify(packageJsonServer));
+
   console.log('Installing dependencies');
   await asyncSpawn('npm i --prefix ./dist');
 
