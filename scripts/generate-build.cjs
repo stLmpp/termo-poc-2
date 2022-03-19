@@ -26,7 +26,7 @@ async function main() {
   console.log('Starting build');
 
   console.log('Deleting dist');
-  await rm(distPath, { recursive: true });
+  await rm(distPath, { recursive: true, force: true });
 
   console.log('Installing front-end dependencies');
   await asyncSpawn('yarn install');
@@ -65,6 +65,9 @@ async function main() {
 
   console.log('Adding package.json on dist');
   await writeFile(join(distPath, 'package.json'), JSON.stringify(packageJsonServer));
+
+  console.log('Installing dependencies on dist');
+  await asyncSpawn('npm i --prefix ./dist');
 
   const zip = new AdmZip();
   zip.addLocalFolder(distPath);
