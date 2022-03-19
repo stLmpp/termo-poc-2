@@ -90,11 +90,10 @@
   }
 
   function onReset(): void {
-    startRows();
+    onSelectChange();
   }
 
   onMount(async () => {
-    startRows();
     await onSelectChange();
     await statsService.post();
   });
