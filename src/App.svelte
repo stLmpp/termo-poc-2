@@ -64,7 +64,7 @@
   }
 
   function startRows(): void {
-    rows = Array.from({ length: 6 }, (_, index) => ({
+    rows = Array.from({ length: rowNumber }, (_, index) => ({
       letters: Array.from({ length: 5 }, (_, letterIndex) => ({
         hasLetter: false,
         sameIndex: false,
