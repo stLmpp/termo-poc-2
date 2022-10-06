@@ -1,12 +1,10 @@
 import { differenceInMinutes, isValid, subMinutes } from 'date-fns';
 
-const baseApiUrl = import.meta.env.PROD ? '/api' : 'http://localhost:3000/api'
-const cacheKey = 'TERMO-PREDICTIONS-LAST-DATE-STATS'
+const baseApiUrl = import.meta.env.PROD ? '/api' : 'http://localhost:3000/api';
+const cacheKey = 'TERMO-PREDICTIONS-LAST-DATE-STATS';
 
 class StatsService {
-
-  constructor(private storage: Storage) {
-  }
+  constructor(private storage: Storage) {}
 
   private readonly _endPoint = `${baseApiUrl}/stats`;
 
@@ -24,10 +22,11 @@ class StatsService {
   }
 
   async post(): Promise<void> {
-    if (await this._isPostNecessary()) {
-      await fetch(this._endPoint, { method: 'POST' }).then(response => response.json());
-      this.storage.setItem(cacheKey, new Date().toISOString());
-    }
+    // TODO use firestore
+    // if (await this._isPostNecessary()) {
+    //   await fetch(this._endPoint, { method: 'POST' }).then(response => response.json());
+    //   this.storage.setItem(cacheKey, new Date().toISOString());
+    // }
   }
 }
 

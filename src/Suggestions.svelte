@@ -8,7 +8,7 @@
 
   const dispatcher = createEventDispatcher<{ selectedWord: string }>();
 
-  $: wordsArray = !row ? Array.from({ length: 5 }, () => sample(words)) : words;
+  $: wordsArray = !row ? Array.from({ length: 5 }, () => sample(words)!) : words;
 
   function onWordClick(word: string): void {
     dispatcher('selectedWord', word);
