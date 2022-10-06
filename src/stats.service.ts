@@ -1,25 +1,25 @@
-import { differenceInMinutes, isValid, subMinutes } from 'date-fns';
-
-const baseApiUrl = import.meta.env.PROD ? '/api' : 'http://localhost:3000/api';
-const cacheKey = 'TERMO-PREDICTIONS-LAST-DATE-STATS';
+// import { differenceInMinutes, isValid, subMinutes } from 'date-fns';
+//
+// const baseApiUrl = import.meta.env.PROD ? '/api' : 'http://localhost:3000/api';
+// const cacheKey = 'TERMO-PREDICTIONS-LAST-DATE-STATS';
 
 class StatsService {
   constructor(private storage: Storage) {}
 
-  private readonly _endPoint = `${baseApiUrl}/stats`;
-
-  private async _isPostNecessary(): Promise<boolean> {
-    const storageDate = this.storage.getItem(cacheKey);
-    if (!storageDate) {
-      return true;
-    }
-    let lastDate = subMinutes(new Date(), 16);
-    if (storageDate && isValid(new Date(storageDate))) {
-      lastDate = new Date(storageDate);
-    }
-    const difference = differenceInMinutes(new Date(), lastDate);
-    return difference > 15;
-  }
+  // private readonly _endPoint = `${baseApiUrl}/stats`;
+  //
+  // private async _isPostNecessary(): Promise<boolean> {
+  //   const storageDate = this.storage.getItem(cacheKey);
+  //   if (!storageDate) {
+  //     return true;
+  //   }
+  //   let lastDate = subMinutes(new Date(), 16);
+  //   if (storageDate && isValid(new Date(storageDate))) {
+  //     lastDate = new Date(storageDate);
+  //   }
+  //   const difference = differenceInMinutes(new Date(), lastDate);
+  //   return difference > 15;
+  // }
 
   async post(): Promise<void> {
     // TODO use firestore
