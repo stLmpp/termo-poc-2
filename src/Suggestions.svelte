@@ -17,7 +17,7 @@
 
 <div class="suggestions" class:disabled>
   {#each wordsArray as word}
-    <div class="suggestion" on:click={() => onWordClick(word)}>{word}</div>
+    <button class="suggestion" on:click={() => onWordClick(word)}>{word}</button>
   {/each}
 </div>
 
@@ -29,6 +29,7 @@
   }
 
   .suggestion {
+    all: unset;
     border: 1px solid #c0c0c0;
     border-radius: 4px;
     display: flex;

@@ -15,22 +15,14 @@
   const onlyLetterReg = /^[a-zA-Z]$/;
 
   function onInput(): void {
-    input.value = (input.value ?? '').toUpperCase();
     if (!onlyLetterReg.test(input.value)) {
       input.value = '';
     }
-    letter = { ...letter, value: input.value };
   }
 
   function onFocus(): void {
     input.select();
     dispatch('focus');
-  }
-
-  function onKeyup(event: KeyboardEvent): void {
-    if (onlyLetterReg.test(event.key)) {
-      dispatch('next');
-    }
   }
 
   function onKeydown(event: KeyboardEvent): void {
@@ -46,6 +38,12 @@
     }
     if (event.key === 'ArrowUp') {
       dispatch('up');
+    }
+    if (onlyLetterReg.test(event.key)) {
+      event.preventDefault();
+      input.value = (event.key ?? '').toUpperCase();
+      letter = { ...letter, value: input.value };
+      dispatch('next');
     }
   }
 
@@ -83,7 +81,6 @@
   {disabled}
   on:input={onInput}
   on:focus={onFocus}
-  on:keyup={onKeyup}
   on:keydown={onKeydown}
   on:click={onClick}
   readonly={selectionMode && !disabled}

@@ -18,7 +18,7 @@
         <Icon icon="arrow-clockwise" />
         <span class="visually-hidden">Reset</span>
       </button>
-      <a class="btn btn-primary" target="_blank" href="https://github.com/stLmpp/termo-predictions">
+      <a class="btn btn-primary" target="_blank" rel="noreferrer" href="https://github.com/stLmpp/termo-predictions">
         <Icon icon="github" />
         <span class="visually-hidden">Github</span>
       </a>
