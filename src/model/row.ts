@@ -4,4 +4,5 @@ export interface IRow {
   letters: ILetter[];
   disabled: boolean;
   selectionMode: boolean;
+  id: number;
 }

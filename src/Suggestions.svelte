@@ -3,7 +3,7 @@
   import { createEventDispatcher } from 'svelte';
 
   export let row = 0;
-  export let words: string[] = [];
+  export let words: readonly string[] = [];
   export let disabled = false;
 
   const dispatcher = createEventDispatcher<{ selectedWord: string }>();

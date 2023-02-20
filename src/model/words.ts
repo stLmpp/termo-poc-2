@@ -3,7 +3,7 @@ import type { ILetter } from './letter';
 import { shuffleArray } from '../util';
 
 export class Words {
-  constructor(wordsArray: string[]) {
+  constructor(wordsArray: readonly string[]) {
     this._rowWords[-1] = wordsArray.map(word => new Word(word));
     this._rowWords[0] = wordsArray.map(word => new Word(word));
   }
@@ -38,11 +38,11 @@ export class Words {
     return this;
   }
 
-  getWordsSuggestions(row: number): string[] {
+  getWordsSuggestions(row: number): readonly string[] {
     return this._rowWords[row].map(word => word.value);
   }
 
-  getWordsSuggestionsShuffled(row: number): string[] {
+  getWordsSuggestionsShuffled(row: number): readonly string[] {
     return shuffleArray(this.getWordsSuggestions(row));
   }
 }

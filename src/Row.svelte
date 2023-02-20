@@ -4,6 +4,7 @@
   import type { ILetter } from './model/letter';
   import Icon from './Icon.svelte';
 
+  export let id: number;
   export let rowIndex: number;
   export let disabled = false;
   export let letters: ILetter[] = [];
@@ -55,7 +56,7 @@
   $: disabledEnterEditMode = letters.some(letter => !letter.value);
 </script>
 
-<div class="row-container">
+<div class="row-container" id="row-{id}">
   <div class="row-wrapper" class:active={!disabled}>
     <div class="row">
       {#each letters as letter, index}

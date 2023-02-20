@@ -7,15 +7,15 @@
   import { Words } from './model/words';
   import Suggestions from './Suggestions.svelte';
   import Navbar from './Navbar.svelte';
-  import { statsService } from './stats.service';
+  import { getRowId } from './util.js';
 
   let rows: IRow[] = [];
 
   const languages = languageService.getLanguages();
   const rowNumberOptions = [6, 7, 8, 9];
-  let wordsArray: string[] = [];
+  let wordsArray: readonly string[] = [];
   let words = new Words([]);
-  let wordsDisplay: string[] = [];
+  let wordsDisplay: readonly string[] = [];
   let language = LanguageEnum.ptBr;
   let selectedRowIndex = 0;
   let rowNumber = 6;
@@ -50,7 +50,8 @@
     rows = Array.from(
       { length: rowNumber },
       (_, index) =>
-        rows[index] ?? {
+        rows[index] ??
+        ({
           selectionMode: false,
           disabled: true,
           letters: Array.from({ length: 5 }, (_, letterIndex) => ({
@@ -59,7 +60,8 @@
             value: '',
             index: letterIndex,
           })),
-        }
+          id: getRowId(),
+        } satisfies IRow)
     );
   }
 
@@ -73,6 +75,7 @@
       })),
       disabled: !!index,
       selectionMode: false,
+      id: getRowId(),
     }));
   }
 
@@ -95,7 +98,6 @@
 
   onMount(async () => {
     await onSelectChange();
-    await statsService.post();
   });
 </script>
 
@@ -120,7 +122,7 @@
       <label for="row-number">Row number</label>
     </div>
   </div>
-  {#each rows as row, index}
+  {#each rows as row, index (row.id)}
     <Row
       bind:letters={row.letters}
       disabled={row.disabled}
@@ -129,6 +131,7 @@
       on:previous={onPrevious}
       rowIndex={index}
       lastRow={index === rows.length - 1}
+      id={row.id}
     />
   {/each}
   <hr />
